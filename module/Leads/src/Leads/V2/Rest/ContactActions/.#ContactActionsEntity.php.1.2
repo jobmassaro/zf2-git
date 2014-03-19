@@ -1,0 +1,34 @@
+<?php
+namespace Leads\V2\Rest\ContactActions;
+
+
+class ContactActionsEntity
+{
+    public $result;
+    public $event_id;
+    private $error;
+    public function __construct(array $entity = null)
+    {
+        if ($entity !== null && is_array($entity)) {
+            $this->event_id = $entity['event_id'];
+            $this->result = $entity['result'];
+            $this->error = $entity['error'];
+        }
+    }
+    
+    public function getResult()
+    {
+        return $this->result;
+    }
+    
+    public function getEventId()
+    {
+        return $this->event_id;    
+    }
+    
+    
+    public function getError()
+    {
+        return $this->error;    
+    }
+}

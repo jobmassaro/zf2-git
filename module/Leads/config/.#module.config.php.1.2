@@ -1,0 +1,87 @@
+<?php
+// $Id: module.config.php,v 1.3 2014/03/17 08:35:29 fiorentino Exp $
+return array(
+
+/*    'service_manager' => array(
+        'factories' => array(
+            'Leads\\V2\\Rest\\Management\\ManagementResource' => 'Leads\\V2\\Rest\\Management\\ManagementResourceFactory'
+        ),
+    ),*/
+    'zf-rest' => array(
+        'Leads\\V2\\Rest\\Management\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\Management\ManagementResource',
+            'collection_name'         => 'lead-assign',
+            'page_size'               => '10',
+            'route_name'              => 'leads.rest.management',
+            'resource_http_methods'   => array('GET', 'PATCH', 'PUT','POST'),
+            'collection_http_methods' => array('GET', 'POST'),
+            'entity_class'            => 'Leads\V2\Rest\Management\ManagementEntity',
+            'collection_class'        => 'Leads\V2\Rest\Management\ManagementCollection',
+        ),
+        'Leads\\V2\\Rest\\ContactActions\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\ContactActions\ContactActionsResource',
+            'collection_name'         => 'contact-actions',
+            'page_size'               => '10',
+            'route_name'              => 'leads.rest.contactactions',
+            'resource_http_methods'   => array('GET', 'PATCH', 'PUT','POST'),
+            'collection_http_methods' => array('GET', 'PATCH', 'PUT','POST'),
+            'entity_class'            => 'Leads\V2\Rest\ContactActions\ContactActionsEntity',
+            'collection_class'        => 'Leads\V2\Rest\ContactActions\ContactActionsCollection',
+        ),
+    ),
+    'zf-hal' => array(
+        'metadata_map' => array(
+            'Leads\\V2\\Rest\\Management\\ManagementEntity' => array(
+                'identifier_name' => 'management_id',
+                'route_name' => 'leads.rest.management',
+                'hydrator' => 'arrayserializable',
+            ),
+            'Leads\\V2\\Rest\\Management\\ManagementCollection' => array(
+                'identifier_name' => 'management_id',
+                'route_name' => 'leads.rest.management',
+                'is_collection' => '1',
+            ),
+            'Leads\\V2\\Rest\\ContactActions\\ContactActionsEntity' => array(
+                'identifier_name' => 'event_id',
+                'route_name' => 'leads.rest.contactactions',
+                'hydrator' => 'arrayserializable',
+            ),
+            'Leads\\V2\\Rest\\ContactActions\\ContactActionsCollection' => array(
+                'identifier_name' => 'event_id',
+                'route_name' => 'leads.rest.contactactions',
+                'is_collection' => true,
+            ),
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'leads.rest.management' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/management[/:management_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\Management\\Controller',
+                    ),
+                ),
+            ),
+            'leads.rest.contactactions' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/contactactions[/:event_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\ContactActions\\Controller',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'zf-versioning' => array(
+        'uri' => array(
+            0 => 'leads.rest.management',
+        ),
+        'default_version' => 2,
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(),
+    ),
+);

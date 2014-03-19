@@ -1,0 +1,143 @@
+<?php
+// $Id: module.config.php,v 1.4 2014/03/17 16:05:06 fiorentino Exp $
+return array(
+
+    'zf-rest' => array(
+        'Leads\\V2\\Rest\\Management\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\Management\ManagementResource',
+            'collection_name'         => 'lead-assign',
+            'page_size'               => '10',
+            'route_name'              => 'leads.rest.management',
+            'resource_http_methods'   => array('GET', 'PATCH','POST'),
+            'collection_http_methods' => array('GET', 'POST'),
+            'entity_class'            => 'Leads\V2\Rest\Management\ManagementEntity',
+            'collection_class'        => 'Leads\V2\Rest\Management\ManagementCollection',
+        ),
+        'Leads\\V2\\Rest\\ContactActions\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\ContactActions\ContactActionsResource',
+            'collection_name'         => 'contact-actions',
+            'page_size'               => '10',
+            'route_name'              => 'leads.rest.contactactions',
+            'resource_http_methods'   => array('GET', 'PATCH', 'POST'),
+            'collection_http_methods' => array('GET', 'POST'),
+            'entity_class'            => 'Leads\V2\Rest\ContactActions\ContactActionsEntity',
+            'collection_class'        => 'Leads\V2\Rest\ContactActions\ContactActionsCollection',
+        ),
+        'Leads\\V2\\Rest\\Feedback\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\Feedback\FeedbackResource',
+            'collection_name'         => 'feedbacks',
+            'page_size'               => '10',
+            'route_name'              => 'leads.rest.feedback',
+            'resource_http_methods'   => array('POST'),
+            'collection_http_methods' => array('POST'),
+            'entity_class'            => 'Leads\V2\Rest\Feedback\FeedbackEntity',
+            'collection_class'        => 'Leads\V2\Rest\Feedback\FeedbackCollection',
+        ),
+        'Leads\\V2\\Rest\\Languages\\Controller' => array(
+            'listener'                => 'Leads\V2\Rest\Languages\LanguagesResource',
+            'collection_name'         => 'languages',
+            'page_size'               => '10',
+            'route_identifier_name'   => '$login_name',
+            'route_name'              => 'leads.rest.languages',
+            'resource_http_methods'   => array('GET'),
+            'collection_http_methods' => array('GET'),
+            'entity_class'            => 'Leads\V2\Rest\Languages\LanguagesEntity',
+            'collection_class'        => 'Leads\V2\Rest\Languages\LanguagesCollection',
+        ),
+    ),
+    'zf-hal' => array(
+        'metadata_map' => array(
+            'Leads\\V2\\Rest\\Management\\ManagementEntity' => array(
+                'identifier_name' => 'management_id',
+                'route_name' => 'leads.rest.management',
+                'hydrator' => 'arrayserializable',
+            ),
+            'Leads\\V2\\Rest\\Management\\ManagementCollection' => array(
+                'identifier_name' => 'management_id',
+                'route_name' => 'leads.rest.management',
+                'is_collection' => '1',
+            ),
+            'Leads\\V2\\Rest\\ContactActions\\ContactActionsEntity' => array(
+                'identifier_name' => 'event_id',
+                'route_name' => 'leads.rest.contactactions',
+                'hydrator' => 'arrayserializable',
+            ),
+            'Leads\\V2\\Rest\\ContactActions\\ContactActionsCollection' => array(
+                'identifier_name' => 'event_id',
+                'route_name' => 'leads.rest.contactactions',
+                'is_collection' => true,
+            ),
+
+            'Leads\\V2\\Rest\\Feedback\\FeedbackEntity' => array(
+                'identifier_name' => 'feedback_id',
+                'route_name' => 'leads.rest.feedback',
+                'hydrator' => 'arrayserializable',
+            ),
+            'Leads\\V2\\Rest\\Feedback\\FeedbackCollection' => array(
+                'identifier_name' => 'feedback_id',
+                'route_name' => 'leads.rest.feedback',
+                'is_collection' => true,
+            ),
+
+            'Leads\\V2\\Rest\\Translation\\TranslationEntity' => array(
+                'identifier_name' => 'language_id',
+                'route_name' => 'leads.rest.translation',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ClassMethods',
+            ),
+            'Leads\\V2\\Rest\\Translation\\TranslationCollection' => array(
+                'identifier_name' => 'language_id',
+                'route_name' => 'leads.rest.translation',
+                'is_collection' => true,
+            ),
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'leads.rest.management' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/management[/:management_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\Management\\Controller',
+                    ),
+                ),
+            ),
+            'leads.rest.contactactions' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/contactactions[/:event_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\ContactActions\\Controller',
+                    ),
+                ),
+            ),
+            'leads.rest.feedback' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/feedback[/:feedback_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\Feedback\\Controller',
+                    ),
+                ),
+            ),
+            'leads.rest.translation' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/leads/translation[/:language_id]',
+                    'defaults' => array(
+                        'controller' => 'Leads\\V2\\Rest\\Translation\\Controller',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'zf-versioning' => array(
+        'uri' => array(
+            0 => 'leads.rest.management',
+        ),
+        'default_version' => 2,
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(),
+    ),
+);
